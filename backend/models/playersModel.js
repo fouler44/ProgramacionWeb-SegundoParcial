@@ -24,6 +24,10 @@ const playerSchema = mongoose.Schema({
     contratoExpira: {
         type: Date,
         required: [true, "La fecha es obligatoria"]
+    },
+    imagen: {
+        type: String,
+        default: "assets/img/default.webp"
     }
 })
 

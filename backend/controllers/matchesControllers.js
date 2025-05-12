@@ -3,27 +3,29 @@ const Match = require("../models/matchesModel");
 
 
 const getMatches = asyncHandler(async (req, res) => {
-    const matches = await Match.find();
+    const matches = await Match.find().sort({ fechaHora: 1 });
     res.status(200).json({ matches });
 });
 
 
 
 const createMatch = asyncHandler(async (req, res) => {
-    const { torneo, jornada, oponente, fecha, hora, ubicacion } = req.body;
+    const { juego, torneo, jornada, oponente, fechaHora, ubicacion, resultado, imagenRival } = req.body;
 
-    if (!torneo || !jornada || !oponente || !fecha || !hora || !ubicacion) {
+    if (!juego || !torneo || !jornada || !oponente || !fechaHora || !ubicacion) {
         res.status(400);
         throw new Error("Por favor llena todos los campos obligatorios");
     }
 
     const match = await Match.create({
+        juego,
         torneo,
         jornada,
         oponente,
-        fecha,
-        hora,
-        ubicacion
+        fechaHora,
+        ubicacion,
+        resultado,
+        imagenRival
     });
 
     res.status(201).json({ match });

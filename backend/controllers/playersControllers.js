@@ -2,20 +2,26 @@ const asyncHandler = require("express-async-handler");
 const Player = require("../models/playersModel");
 
 const getPlayers = asyncHandler(async (req, res) => {
-    const players = await Player.find();
+    const filtro = {};
+
+    if (req.query.juego) {
+        filtro.juego = { $regex: new RegExp(req.query.juego, 'i') }
+    }
+
+    const players = await Player.find(filtro);
     res.status(200).json({ players });
 });
 
 const createPlayers = asyncHandler(async (req, res) => {
-    const { nombre, juego, posicion, edad, pais, contratoExpira } = req.body;
+    const { nombre, juego, posicion, edad, pais, contratoExpira, imagen} = req.body;
 
-    // Verificar que no falte ningún campo obligatorio
+
     if (!nombre || !juego || !posicion || !edad || !pais || !contratoExpira) {
         res.status(400);
-        throw new Error("Por favor, llena todos los apartados");
+        throw new Error("Por favor, llena todos los apartados")
     }
 
-    // Crear el nuevo jugador
+
     const player = await Player.create({
         nombre,
         juego,
@@ -23,6 +29,7 @@ const createPlayers = asyncHandler(async (req, res) => {
         edad,
         pais,
         contratoExpira,
+        imagen
     });
 
     res.status(201).json({ player });
