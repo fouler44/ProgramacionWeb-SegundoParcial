@@ -11,7 +11,7 @@ connectDB()
 const app = express()
 
 app.use(cors({
-    origin: 'http://127.0.0.1:5500',
+    origin: ['http://127.0.0.1:5500', 'https://vaporteam-nine.vercel.app/', /\.vercel\.app$/ ],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }))
 
